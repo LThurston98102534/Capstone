@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(realsense_ar_tracking)
 
 ## Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs ar_track_alvar_msgs genmsg)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs ar_track_alvar_msgs genmsg tf geometry_msgs)
 
 ## Declare ROS messages and services
 #add_message_files(FILES AlvarMarker.msg AlvarMarkers.msg)
@@ -20,10 +20,12 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(tracker src/tracker.cpp)
 target_link_libraries(tracker ${catkin_LIBRARIES})
-#add_dependencies(tracker )
 
-#add_executable(listener src/listener.cpp)
-#target_link_libraries(listener ${catkin_LIBRARIES})
-#add_dependencies(listener beginner_tutorials_generate_messages_cpp)
+add_executable(tf_listener src/tf_listener.cpp)
+target_link_libraries(tf_listener ${catkin_LIBRARIES})
+
+add_executable(tf_broadcaster src/tf_broadcaster.cpp)
+target_link_libraries(tf_broadcaster ${catkin_LIBRARIES})
+
 
 # %EndTag(FULLTEXT)%
