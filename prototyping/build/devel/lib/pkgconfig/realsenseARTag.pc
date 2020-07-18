@@ -1,0 +1,8 @@
+prefix=/home/user/git2/Capstone/prototyping/build/devel
+
+Name: realsenseARTag
+Description: Description of realsenseARTag
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/user/git2/Capstone/prototyping/build/devel/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: realsenseARTag
+Description: Description of realsenseARTag
+Version: 0.0.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: 
