@@ -4,11 +4,13 @@
 #include "ar_track_alvar_msgs/AlvarMarkers.h"
 
 #include <tf/transform_listener.h>
+#include <tf/transform_broadcaster.h>
 
 
 #include <sstream>
 
 tf::TransformListener* listener=NULL;
+tf::TransformBroadcaster* br=NULL;
 
 
 void trackerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& msg)
@@ -16,18 +18,28 @@ void trackerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& msg)
  // tf::TransformListener listener(ros::Duration(10));
   geometry_msgs::PoseStamped sensor_pose;
   float timestamp = 0.0;
+  tf::Transform transform;
   
   for (int i = 0; i < msg->markers.size(); i++) {
     if (msg->markers.at(i).id == 4) {
         ROS_INFO("I see marker: [%d] which is the fridge!", msg->markers.at(i).id);
         sensor_pose = msg->markers.at(i).pose;
         sensor_pose.header.frame_id = msg->markers.at(i).header.frame_id;
-        //timestamp = msg->markers.at(i).header.stamp.toSec();
+        transform.setOrigin(tf::Vector3(sensor_pose.pose.position.x, sensor_pose.pose.position.y, sensor_pose.pose.position.z));
+        transform.setRotation(tf::Quaternion(sensor_pose.pose.orientation.x, sensor_pose.pose.orientation.y, sensor_pose.pose.orientation.z, sensor_pose.pose.orientation.w));
+        br->sendTransform(tf::StampedTransform(transform, ros::Time::now(), sensor_pose.header.frame_id, "fridge_link"));
+        
+        
+        timestamp = msg->markers.at(i).header.stamp.toSec();
     } else{
         if (msg->markers.at(i).id == 0) {
             ROS_INFO("I see marker: [%d] which is the sealer!", msg->markers.at(i).id);
             sensor_pose = msg->markers.at(i).pose;
             sensor_pose.header.frame_id = msg->markers.at(i).header.frame_id;
+            transform.setOrigin(tf::Vector3(sensor_pose.pose.position.x, sensor_pose.pose.position.y, sensor_pose.pose.position.z));
+        transform.setRotation(tf::Quaternion(sensor_pose.pose.orientation.x, sensor_pose.pose.orientation.y, sensor_pose.pose.orientation.z, sensor_pose.pose.orientation.w));
+        br->sendTransform(tf::StampedTransform(transform, ros::Time::now(), sensor_pose.header.frame_id, "sealer_link"));
+            
             timestamp = msg->markers.at(i).header.stamp.toSec();
         } else {
             ROS_INFO("Not sure what I can see!");
@@ -95,6 +107,8 @@ int main(int argc, char **argv)
    */
    
   listener = new(tf::TransformListener);
+  br = new(tf::TransformBroadcaster);
+  
   ros::Subscriber sub = n.subscribe("ar_pose_marker", 1000, trackerCallback);
 
     /**
