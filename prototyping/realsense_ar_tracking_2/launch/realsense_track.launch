@@ -1,8 +1,8 @@
 <launch>
- <arg name="marker_size" default="6.1" />
+ <arg name="marker_size" default="6.0" />
  <arg name="max_new_marker_error" default="0.08" />
  <arg name="max_track_error" default="0.2" />
- <arg name="bundle_files" default="$(find capstone_prototypes)/bundles/fridge.xml $(find capstone_prototypes)/bundles/sealer.xml" />
+ <arg name="bundle_files" default="$(find realsense_ar_tracking_2)/bundles/fridge.xml $(find realsense_ar_tracking_2)/bundles/sealer.xml" />
  
  <arg name="cam_image_topic" default="/camera/color/image_raw" />
  <arg name="cam_info_topic" default="/camera/color/camera_info" />
@@ -12,9 +12,9 @@
 
 <node name="ar_track_alvar" pkg="ar_track_alvar" type="findMarkerBundlesNoKinect" respawn="false" output="screen" args="$(arg marker_size) $(arg max_new_marker_error) $(arg max_track_error) $(arg cam_image_topic) $(arg cam_info_topic) $(arg output_frame) $(arg bundle_files)" />
  
- <node name="tf_broadcaster" pkg="realsense_ar_tracking" type="tf_broadcaster" respawn="false" output="screen"/>
+ <node name="tf_broadcaster_2" pkg="realsense_ar_tracking_2" type="tf_broadcaster_2" respawn="false" output="screen"/>
 
- <node name="tracker" pkg="realsense_ar_tracking" type="tracker" respawn="false" output="screen"/>
+ <node name="tracker_2" pkg="realsense_ar_tracking_2" type="tracker_2" respawn="false" output="screen"/>
 
 
 </launch>

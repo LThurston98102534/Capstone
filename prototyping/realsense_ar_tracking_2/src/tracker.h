@@ -19,7 +19,7 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "ar_track_alvar_msgs/AlvarMarkers.h"
 
-const double default_refresh_rate = 2;
+const double default_refresh_rate = 5;
 
 class Tracker{
 public:

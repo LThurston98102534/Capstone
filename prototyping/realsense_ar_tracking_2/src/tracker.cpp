@@ -39,13 +39,11 @@ void Tracker::trackerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr&
     
 
 
-  
-
-
+ 
 
 void Tracker::trackTags()
 {
-    // Set refresh rate to required value (10 seconds as per specification)
+    // Set refresh rate to default value
     ros::Rate rate_limiter(refresh_rate_);
     while (ros::ok()) {
           
@@ -101,7 +99,7 @@ void Tracker::trackTags()
                 
           }
 
-       // Delay thread for remainder of time in 10 second loop
+       // Delay thread for remainder of time in loop
        rate_limiter.sleep();
 
     }
