@@ -1,31 +1,21 @@
-#include "tracker.h"
+#include "calibrator.h"
 
-/*
-#include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "geometry_msgs/PoseStamped.h"
-#include "ar_track_alvar_msgs/AlvarMarkers.h"
 
-#include <tf/transform_listener.h>
-#include <tf/transform_broadcaster.h>
-#include <sstream>
-*/
-
-Tracker::Tracker(ros::NodeHandle nh)
-    : nh_(nh), listener_(new(tf::TransformListener)), broadcaster_(new(tf::TransformBroadcaster)), refresh_rate_(default_refresh_rate)
+Calibrator::Calibrator(ros::NodeHandle nh)
+    : nh_(nh), listener_(new(tf::TransformListener)), broadcaster_(new(tf::TransformBroadcaster)), refresh_rate_(default_refresh_rate), calib_pos_count_(0), arm_position_(1)
 {
-    sub1_ = nh_.subscribe("ar_pose_marker", 1000, &Tracker::trackerCallback, this);
+    sub1_ = nh_.subscribe("ar_pose_marker", 1000, &Calibrator::trackerCallback, this);
 
 
 }
 
-Tracker::~Tracker()
+Calibrator::~Calibrator()
 {
 
 }
 
 
-void Tracker::trackerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& msg)
+void Calibrator::trackerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& msg)
 {
     // Create unique lock for safe access to member variables
     std::unique_lock<std::mutex> marker_pose_lock(marker_pose_mutex_);
@@ -41,8 +31,76 @@ void Tracker::trackerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr&
 
  
 
-void Tracker::trackTags()
+void Calibrator::calibrateCamera()
 {
+    while(ros::ok()) {
+        // While position count < 5
+        while(calib_pos_count_ < 5) {
+            
+            // Ask user what position to drive arm to
+            std::cout << "Select which Arm Position to Drive KUKA Arm to: ";
+            while(!(std::cin >> arm_position_)){
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Invalid input, Try again: ";
+            }
+            
+                   
+            std::cout << "Driving Robot Arm to Position: " << arm_position_ << std::endl;     
+            // Drive robot arm to position
+            
+            
+            
+            
+            
+            
+            // Prompt user to hit enter once robot arm has stopped moving
+            std::cout << "Press Enter when Robot Arm Stops Moving to Continue Calibration... " << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            
+            std::cout << "Do the calibration thing" << std::endl;
+                // Get position of tag w.r.t. camera from kinematic chain - tag_expected
+                // Measure observed position of tag w.r.t. camera from Alvar package - tag_observed
+                // Calculate relative transform between tag_expected and tag_observed to obtain the difference in these positions
+        
+        
+        
+        
+        
+            calib_pos_count_++;
+        }
+
+                
+        // Calculate the average difference between the expected and observed
+        // Publish this difference to the terminal
+    
+        std::cout << "Averaging Results" << std::endl;
+    
+    
+    
+    }
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
     // Set refresh rate to default value
     ros::Rate rate_limiter(refresh_rate_);
     while (ros::ok()) {
@@ -117,7 +175,7 @@ void Tracker::trackTags()
 
     }
 
-
+*/
 
 
 }

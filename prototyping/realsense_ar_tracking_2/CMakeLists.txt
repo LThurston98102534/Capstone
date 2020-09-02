@@ -34,11 +34,14 @@ target_link_libraries(tracker_2 ${catkin_LIBRARIES})
 #add_executable(main src/main.cpp)
 #target_link_libraries(main ${catkin_LIBRARIES})
 
-add_executable(tf_listener_2 src/tf_listener.cpp)
-target_link_libraries(tf_listener_2 ${catkin_LIBRARIES})
+#add_executable(tf_listener_2 src/tf_listener.cpp)
+#target_link_libraries(tf_listener_2 ${catkin_LIBRARIES})
 
 add_executable(tf_broadcaster_2 src/tf_broadcaster.cpp)
 target_link_libraries(tf_broadcaster_2 ${catkin_LIBRARIES})
+
+add_executable(camera_calibrator src/camera_calib.cpp src/calibrator.cpp)
+target_link_libraries(camera_calibrator ${catkin_LIBRARIES})
 
 
 # %EndTag(FULLTEXT)%

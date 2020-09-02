@@ -10,10 +10,9 @@ int main(int argc, char** argv){
   tf::TransformBroadcaster broadcaster;
 
   while(n.ok()){
-    broadcaster.sendTransform(
-      tf::StampedTransform(
-        tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.359, 0.0, 0.5)),
-        ros::Time::now(),"robot_base_link", "base_link"));
+    broadcaster.sendTransform(tf::StampedTransform(tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.428, -0.031, 0.2)),ros::Time::now(),"robot_base_link", "base_link"));
+          
+    
     r.sleep();
   }
 }
