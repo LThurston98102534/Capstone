@@ -43,5 +43,8 @@ target_link_libraries(tf_broadcaster_2 ${catkin_LIBRARIES})
 add_executable(camera_calibrator src/camera_calib.cpp src/calibrator.cpp)
 target_link_libraries(camera_calibrator ${catkin_LIBRARIES})
 
+add_executable(sealer_fridge_calibrator src/sealer_fridge_calib.cpp src/calibrator.cpp)
+target_link_libraries(sealer_fridge_calibrator ${catkin_LIBRARIES})
+
 
 # %EndTag(FULLTEXT)%

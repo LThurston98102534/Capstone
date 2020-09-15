@@ -35,6 +35,8 @@ public:
 
     void calibrateCamera();
 
+    void calibrateSealerFridge();
+
     ros::NodeHandle nh_;
 
 private:
