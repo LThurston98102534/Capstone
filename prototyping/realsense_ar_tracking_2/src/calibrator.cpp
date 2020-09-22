@@ -91,6 +91,9 @@ void Calibrator::calibrateCamera()
                     camera_tag_transform.setRotation(tf::Quaternion(sensor_pose.pose.orientation.x, sensor_pose.pose.orientation.y, sensor_pose.pose.orientation.z, sensor_pose.pose.orientation.w));
 
 
+		    tf::StampedTransform camera_internal_transform;
+	    	    listener_->lookupTransform(sensor_pose.header.frame_id, "base_link", ros::Time(0), camera_internal_transform);
+
 
 		    // Get position of Arm w.r.t. tag from kinematic chain
 		    //**********************************************************************//
@@ -99,7 +102,7 @@ void Calibrator::calibrateCamera()
 	  	    //**********************************************************************//
 
 	    	    tf::StampedTransform tag_arm_transform;
-	    	    listener_->lookupTransform("arm", "calib_tag", ros::Time(0), tag_arm_transform);
+	    	    listener_->lookupTransform("end_effector", "calib_tag", ros::Time(0), tag_arm_transform);
 		
 
 
@@ -110,14 +113,15 @@ void Calibrator::calibrateCamera()
 	  	    //**********************************************************************//
 
 	    	    tf::StampedTransform arm_base_transform;
-	    	    listener_->lookupTransform("robot_base_link", "arm", ros::Time(0), arm_base_transform);
+	    	    listener_->lookupTransform("robot_base_link", "end_effector", ros::Time(0), arm_base_transform);
 
 
                      
 
 	            // Calculate relative transform between base and camera by solving the equation X = (A*B*C)^-1*I
 		    tf::Transform calc_transform;
-		    calc_transform.mult(camera_tag_transform, tag_arm_transform);
+	  	    calc_transform.mult(camera_internal_transform, camera_tag_transform);
+                    calc_transform *= tag_arm_transform;
 		    calc_transform *= arm_base_transform;
 
 		    tf::Transform base_camera_transform;
