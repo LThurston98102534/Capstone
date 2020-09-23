@@ -165,10 +165,7 @@ void Calibrator::calibrateCamera()
         
             
         } else {
-	    // Calculate the average difference between the expected and observed
-            // Publish this difference to the terminal
-    
-            //std::cout << "Averaging Results" << std::endl;
+	    calib_pos_count_ = 0;
 
 
 	}
