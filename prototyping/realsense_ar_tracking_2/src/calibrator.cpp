@@ -56,9 +56,94 @@ void Calibrator::calibrateCamera()
 	    //*		NEED TO WORK OUT HOW TO IMPLEMENT THE ARM DRIVE FUNCTION   *//
 	    //**********************************************************************//
             
-            
-            
-            
+/*            
+            tf::Transform Tab;
+	    tf::Transform Tbc;
+	    tf::Transform Tca;
+
+	    Tab.setOrigin(tf::Vector3(-2, 2, 1));
+            Tab.setRotation(tf::Quaternion(1, 0, 0, 0));
+
+	    Tbc.setOrigin(tf::Vector3(-2, 4, 1));
+            Tbc.setRotation(tf::Quaternion(1, 0, 0, 0));
+
+	    Tca.mult(Tbc.inverse(), Tab.inverse());
+
+
+
+	    tf::Transform base_camera_transform;
+
+	    base_camera_transform = Tca; //.inverseTimes(identity_transform);
+
+	    tf::Matrix3x3 base_camera_rotation = base_camera_transform.getBasis();
+	    tf::Vector3 base_camera_translation = base_camera_transform.getOrigin();
+
+
+	    // DEBUGGING PRINTING STATEMENTS
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+	    std::cout << "Using Aron's Formula: " << std::endl;
+	    std::cout << "Tca: " << std::endl;
+	    std::cout << base_camera_rotation[0][0] << " " <<  base_camera_rotation[0][1] << " " << base_camera_rotation[0][2] << " " << base_camera_translation[0] << std::endl;
+	    std::cout << base_camera_rotation[1][0] << " " <<  base_camera_rotation[1][1] << " " << base_camera_rotation[1][2] << " " << base_camera_translation[1] << std::endl;
+	    std::cout << base_camera_rotation[2][0] << " " <<  base_camera_rotation[2][1] << " " << base_camera_rotation[2][2] << " " << base_camera_translation[2] << std::endl;
+
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+
+	    tf::Quaternion base_camera_rotation_quat = base_camera_transform.getRotation();
+	    std::cout << "Tca Quaternion: " << std::endl;
+	    std::cout << base_camera_rotation_quat[0] << " " <<  base_camera_rotation_quat[1] << " " << base_camera_rotation_quat[2] << " " << base_camera_rotation_quat[3] << std::endl;
+
+
+            std::cout << std::endl;
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+
+
+
+
+
+
+
+	    Tca.mult(Tab, Tbc);
+
+
+	    tf::Transform identity_transform;
+	    identity_transform = identity_transform.getIdentity();
+
+	    base_camera_transform = Tca.inverseTimes(identity_transform);
+
+	    base_camera_rotation = base_camera_transform.getBasis();
+	    base_camera_translation = base_camera_transform.getOrigin();
+
+
+	    // DEBUGGING PRINTING STATEMENTS
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+	    std::cout << "Using Liam's Formula: " << std::endl;
+	    std::cout << "Tca: " << std::endl;
+	    std::cout << base_camera_rotation[0][0] << " " <<  base_camera_rotation[0][1] << " " << base_camera_rotation[0][2] << " " << base_camera_translation[0] << std::endl;
+	    std::cout << base_camera_rotation[1][0] << " " <<  base_camera_rotation[1][1] << " " << base_camera_rotation[1][2] << " " << base_camera_translation[1] << std::endl;
+	    std::cout << base_camera_rotation[2][0] << " " <<  base_camera_rotation[2][1] << " " << base_camera_rotation[2][2] << " " << base_camera_translation[2] << std::endl;
+
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+
+	    base_camera_rotation_quat = base_camera_transform.getRotation();
+	    std::cout << "Tca Quaternion: " << std::endl;
+	    std::cout << base_camera_rotation_quat[0] << " " <<  base_camera_rotation_quat[1] << " " << base_camera_rotation_quat[2] << " " << base_camera_rotation_quat[3] << std::endl;
+
+
+            std::cout << std::endl;
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+	    std::cout << std::endl;
+
+*/
+
+
             
             // Prompt user to hit enter once robot arm has stopped moving
             std::cout << "Press Space Bar then Enter when Robot Arm Stops Moving to Continue Calibration... ";
@@ -90,30 +175,54 @@ void Calibrator::calibrateCamera()
 		    camera_tag_transform.setOrigin(tf::Vector3(sensor_pose.pose.position.x, sensor_pose.pose.position.y, sensor_pose.pose.position.z));
                     camera_tag_transform.setRotation(tf::Quaternion(sensor_pose.pose.orientation.x, sensor_pose.pose.orientation.y, sensor_pose.pose.orientation.z, sensor_pose.pose.orientation.w));
 
-
+    
 		    tf::StampedTransform camera_internal_transform;
-	    	    listener_->lookupTransform(sensor_pose.header.frame_id, "base_link", ros::Time(0), camera_internal_transform);
+		    listener_->lookupTransform("camera_base_link", sensor_pose.header.frame_id, ros::Time(0), camera_internal_transform);
+	    	    //listener_->lookupTransform(sensor_pose.header.frame_id, "camera_base_link", ros::Time(0), camera_internal_transform);
+
+		    tf::Matrix3x3 camera_internal_rotation = camera_internal_transform.getBasis();
+	   	    tf::Vector3 camera_internal_translation = camera_internal_transform.getOrigin();
+
+		    std::cout << std::endl;
+		    std::cout << std::endl;
+		    std::cout << "Camera's Internal Transform: " << std::endl;
+		    std::cout << camera_internal_rotation[0][0] << " " <<  camera_internal_rotation[0][1] << " " << camera_internal_rotation[0][2] << " " << camera_internal_translation[0] << std::endl;
+		    std::cout << camera_internal_rotation[1][0] << " " <<  camera_internal_rotation[1][1] << " " << camera_internal_rotation[1][2] << " " << camera_internal_translation[1] << std::endl;
+		    std::cout << camera_internal_rotation[2][0] << " " <<  camera_internal_rotation[2][1] << " " << camera_internal_rotation[2][2] << " " << camera_internal_translation[2] << std::endl;
+
+		    std::cout << std::endl;
+		    std::cout << std::endl;
+
+		    tf::Quaternion camera_internal_quat = camera_internal_transform.getRotation();
+		    std::cout << "Camera's Internal Quaternion: " << std::endl;
+		    std::cout << camera_internal_quat[0] << " " <<  camera_internal_quat[1] << " " << camera_internal_quat[2] << " " << camera_internal_quat[3] << std::endl;
 
 
-		    // Get position of Arm w.r.t. tag from kinematic chain
+		    std::cout << std::endl;
+		    std::cout << std::endl;
+		    std::cout << std::endl;
+		    std::cout << std::endl;
+
+
+		    // Get position of End Effector w.r.t. tag from kinematic chain
 		    //**********************************************************************//
 	  	    //*		NEED TO GET THE ACTUAL VALUES OF THESE TRANSFORMS          *//
 		    //*		NEED TO WORK OUT HOW TO INTEGRATE THIS WITH EXISTING URDF  *//
 	  	    //**********************************************************************//
-
+/*
 	    	    tf::StampedTransform tag_arm_transform;
-	    	    listener_->lookupTransform("end_effector", "calib_tag", ros::Time(0), tag_arm_transform);
+	    	    listener_->lookupTransform("link_7", "tool0", ros::Time(0), tag_arm_transform);
 		
 
 
-	   	    // Get position of Base w.r.t. arm from kinematic chain
-		    //**********************************************************************//
+	   	    // Get position of Base w.r.t. End Effector from kinematic chain
+		    //**********************************************************************/
 	  	    //*		NEED TO GET THE ACTUAL VALUES OF THESE TRANSFORMS          *//
 		    //*		NEED TO WORK OUT HOW TO INTEGRATE THIS WITH EXISTING URDF  *//
 	  	    //**********************************************************************//
-
+/*
 	    	    tf::StampedTransform arm_base_transform;
-	    	    listener_->lookupTransform("robot_base_link", "end_effector", ros::Time(0), arm_base_transform);
+	    	    listener_->lookupTransform("base_link", "link_7", ros::Time(0), arm_base_transform);
 
 
                      
@@ -121,6 +230,7 @@ void Calibrator::calibrateCamera()
 	            // Calculate relative transform between base and camera by solving the equation X = (A*B*C)^-1*I
 		    tf::Transform calc_transform;
 	  	    calc_transform.mult(camera_internal_transform, camera_tag_transform);
+		    calc_transform = calc_transform.inverse();
                     calc_transform *= tag_arm_transform;
 		    calc_transform *= arm_base_transform;
 
@@ -128,12 +238,80 @@ void Calibrator::calibrateCamera()
 		    tf::Transform identity_transform;
 		    identity_transform.getIdentity();
 
-		    base_camera_transform = calc_transform.inverseTimes(identity_transform);
+		    base_camera_transform = calc_transform; //.inverseTimes(identity_transform);
 
 		    tf::Matrix3x3 base_camera_rotation = base_camera_transform.getBasis();
 		    tf::Vector3 base_camera_translation = base_camera_transform.getOrigin();
 
-		    broadcaster_->sendTransform(tf::StampedTransform(base_camera_transform, ros::Time::now(), "robot_base_link", "base_link"));
+		    broadcaster_->sendTransform(tf::StampedTransform(base_camera_transform, ros::Time::now(), "base_link", "camera_base_link"));
+
+*/
+
+		    tf::StampedTransform tag_arm_transform;
+	    	    listener_->lookupTransform("link_7", "tool0", ros::Time(0), tag_arm_transform);
+		
+
+
+	   	    // Get position of Base w.r.t. End Effector from kinematic chain
+		    //**********************************************************************//
+	  	    //*		NEED TO GET THE ACTUAL VALUES OF THESE TRANSFORMS          *//
+		    //*		NEED TO WORK OUT HOW TO INTEGRATE THIS WITH EXISTING URDF  *//
+	  	    //**********************************************************************//
+
+	    	    tf::StampedTransform arm_base1_transform;
+	    	    listener_->lookupTransform("base_link", "link_1", ros::Time(0), arm_base1_transform);
+
+		    tf::StampedTransform arm_base2_transform;
+	    	    listener_->lookupTransform("link_1", "link_2", ros::Time(0), arm_base2_transform);
+		    
+		    tf::StampedTransform arm_base3_transform;
+	    	    listener_->lookupTransform("link_2", "link_3", ros::Time(0), arm_base3_transform);
+
+		    tf::StampedTransform arm_base4_transform;
+	    	    listener_->lookupTransform("link_3", "link_4", ros::Time(0), arm_base4_transform);
+
+		    tf::StampedTransform arm_base5_transform;
+	    	    listener_->lookupTransform("link_4", "link_5", ros::Time(0), arm_base5_transform);
+
+		    tf::StampedTransform arm_base6_transform;
+	    	    listener_->lookupTransform("link_5", "link_6", ros::Time(0), arm_base6_transform);
+
+		    tf::StampedTransform arm_base7_transform;
+	    	    listener_->lookupTransform("link_6", "link_7", ros::Time(0), arm_base7_transform);
+
+
+
+                     
+
+	            // Calculate relative transform between base and camera by solving the equation X = (A*B*C)^-1*I
+		    tf::Transform calc_transform;
+	  	    calc_transform.mult(arm_base1_transform, arm_base2_transform);
+		    calc_transform *= arm_base3_transform;
+		    calc_transform *= arm_base4_transform;
+		    calc_transform *= arm_base5_transform;
+		    calc_transform *= arm_base6_transform;
+		    calc_transform *= arm_base7_transform;
+		    calc_transform *= tag_arm_transform;
+   
+
+		    tf::Transform temp_transform;
+	 	    temp_transform.mult(camera_internal_transform, camera_tag_transform);
+
+	            temp_transform = temp_transform.inverse();
+
+                    calc_transform *= temp_transform;
+
+		    tf::Transform base_camera_transform;
+		    tf::Transform identity_transform;
+		    identity_transform.getIdentity();
+
+		    base_camera_transform = calc_transform; //.inverseTimes(identity_transform);
+
+		    tf::Matrix3x3 base_camera_rotation = base_camera_transform.getBasis();
+		    tf::Vector3 base_camera_translation = base_camera_transform.getOrigin();
+
+		    broadcaster_->sendTransform(tf::StampedTransform(base_camera_transform, ros::Time::now(), "base_link", "camera_base_link"));
+
 
 
 

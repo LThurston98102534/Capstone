@@ -14,9 +14,9 @@ int main(int argc, char** argv){
           
     
           
-    broadcaster.sendTransform(tf::StampedTransform(tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.625, 0.0, 0.15)),ros::Time::now(),"robot_base_link", "end_effector"));
+  //  broadcaster.sendTransform(tf::StampedTransform(tf::Transform(tf::Quaternion(1, 0, 0, 0), tf::Vector3(1.325, 0.0, 0.15)),ros::Time::now(),"robot_base_link", "end_effector"));
 
-    broadcaster.sendTransform(tf::StampedTransform(tf::Transform(tf::Quaternion(-0.7071068, 0, 0, 0.7071068), tf::Vector3(0.0, 0.034, 0.1018)),ros::Time::now(),"end_effector", "calib_tag"));
+   // broadcaster.sendTransform(tf::StampedTransform(tf::Transform(tf::Quaternion(0, 0.6335811, -0.6335811, 0.4440158), tf::Vector3(0.034, 0, 0.1218)),ros::Time::now(),"r6_gripper", "calib_tag"));
               
 
 
