@@ -32,10 +32,13 @@ public:
 
     void trackerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& msg);
 
-
     void calibrateCamera();
 
     void calibrateSealerFridge();
+
+    void broadcastBaseCameraTransform();
+
+    void broadcastTagTargetTransform();
 
     ros::NodeHandle nh_;
 
@@ -53,6 +56,24 @@ private:
     double refresh_rate_;
     int calib_pos_count_;
     int arm_position_;
+    int transform_set_;
+    std::mutex transform_set_mutex_;
+
+    double cumulative_rot_x_;
+    double cumulative_rot_y_;
+    double cumulative_rot_z_;
+    double cumulative_rot_w_;
+
+    double cumulative_trans_x_;
+    double cumulative_trans_y_;
+    double cumulative_trans_z_;
+
+    tf::Transform average_base_camera_transform_;
+    std::mutex base_camera_mutex_;
+
+
+    tf::Transform average_tag_target_transform_;
+    std::mutex tag_target_mutex_;
 
 };
 
